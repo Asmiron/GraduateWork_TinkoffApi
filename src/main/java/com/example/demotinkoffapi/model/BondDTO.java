@@ -1,32 +1,30 @@
 package com.example.demotinkoffapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.*;
+import lombok.*;
+import java.time.LocalDate;
 
-import java.sql.Timestamp;
-
-@RequiredArgsConstructor
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BondDTO {
+    String country_of_risk_name;
     String ticker;
     String figi;
-    String nominal;
+    Long nominal_price;
     String name;
     String currency;
-    Timestamp maturity_date;
+    LocalDate maturity_date;
 
     @Override
     public String toString() {
         return "BondDTO{" +
-                "ticker='" + ticker + '\'' +
+                "country_of_risk_name='" + country_of_risk_name + '\'' +
+                ", ticker='" + ticker + '\'' +
                 ", figi='" + figi + '\'' +
-                ", nominal='" + nominal + '\'' +
+                ", nominal_price=" + nominal_price +
                 ", name='" + name + '\'' +
                 ", currency='" + currency + '\'' +
                 ", maturity_date=" + maturity_date +
