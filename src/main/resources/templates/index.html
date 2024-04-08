@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Дипломная работа</title>
+</head>
+<body>
+
+<div>
+    <p>
+        <a href="/bonds">Все доступные облигации</a>
+    </p>
+</div>
+
+<div>
+    <h1>
+        Заполните форму
+    </h1>
+
+<form method="post" th:action="@{/usersData}" th:object="${usersData}">
+    <label for="capital">Начальный капитал</label>
+    <br/>
+    <input type="number" th:field="*{capital}" id="capital"/>
+    <br/>
+    <label for="terminal_date">Терминальная дата</label>
+    <br/>
+    <input type="date" th:field="*{terminal_date}" id="terminal_date"/>
+    <input type="submit" value="Подтвердить"/>
+</form>
+
+</div>
+
+</body>
+</html>
