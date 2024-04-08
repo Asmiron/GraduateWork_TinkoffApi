@@ -18,6 +18,7 @@ public class BondToDTOMapper {
         bondDTO.setNominal_price(bond.getNominal().getUnits());
         bondDTO.setMaturity_date(Instant.ofEpochSecond(bond.getMaturityDate().getSeconds(), bond.getMaturityDate().getNanos())
                 .atOffset(ZoneOffset.UTC).toLocalDate());
+
         return bondDTO;
     }
 }

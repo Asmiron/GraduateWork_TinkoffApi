@@ -14,6 +14,8 @@ public class BondDTO {
     String ticker;
     String figi;
     Long nominal_price;
+
+    Long current_price;
     String name;
     String currency;
     LocalDate maturity_date;

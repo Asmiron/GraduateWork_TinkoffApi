@@ -20,10 +20,13 @@ public class BondService {
 
     public List<BondDTO> getBondsDTO(){
         try {
-            return investApi.getInstrumentsService().getBonds(InstrumentStatus.INSTRUMENT_STATUS_BASE).get()
-                    .stream().filter(bond -> !bond.getFloatingCouponFlag()).map(BondToDTOMapper::map)
+            var bonds = investApi.getInstrumentsService().getBonds(InstrumentStatus.INSTRUMENT_STATUS_BASE).get().stream()
+                    .filter(bond -> !bond.getFloatingCouponFlag() && bond.getBuyAvailableFlag())
+                    .map(BondToDTOMapper::map)
                     .filter(bond -> bond.getMaturity_date().isAfter(LocalDate.now()))
                     .toList();
+            getBondsCurrentPrice(bonds);
+            return bonds.stream().filter(bond -> bond.getCurrent_price() != 0).toList();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -35,6 +38,19 @@ public class BondService {
                 .filter(bond -> bond.getMaturity_date().isBefore(terminal))
                 .sorted((Comparator.comparing(BondDTO::getMaturity_date)))
                 .toList();
+    }
+
+    public void getBondsCurrentPrice(List<BondDTO> bonds){
+        try {
+            var figis = bonds.stream().map(BondDTO::getFigi).toList();
+            var lastPrices = investApi.getMarketDataService().getLastPrices(figis).get();
+            for (int i = 0; i < lastPrices.size(); i++){
+                var lastPrice = lastPrices.get(i).getPrice();
+                bonds.get(i).setCurrent_price(lastPrice.getUnits()*10 + lastPrice.getNano()/100000000);
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
